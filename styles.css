@@ -1,3 +1,16 @@
+#loading{
+    position: absolute;
+    z-index: 1000;
+    background-image: url("img/loading.gif");
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    top: 0%;
+    left: 0%;
+
+}
+
+
 #notification {
     position: absolute;
     display: none;
@@ -13,3 +26,54 @@
     padding: 1%;
     font-family: Arial, Helvetica, sans-serif;
   }
+ #eggcounter
+ {
+     display: inline;
+     
+ } 
+ #eggs
+ {
+    font-size: 5vw;
+    width: 30%;
+    height: 5vw;
+    display: block;
+    margin-left: 30%;
+    margin-top: 1%;
+    
+ }
+ #eggs > img{
+     height: 80%;
+     background-size: cover;
+ }
+ #body{
+     background-image: url("img/background.jpg");
+     background-size: cover;
+     color: orange;
+
+ }
+
+
+
+.chicken > img{
+background-size: cover;
+height: 4vw;
+padding: 0%;
+margin-right: 1%;
+display: inline;
+vertical-align: sub;
+
+}
+#chickensdiv{
+    margin-left: 1%;
+    width: 20vw;
+    display: block;
+    font-size: 3vw;
+    height: 10vw;
+}
+
+.chickentext{
+    display: inline;
+}
+.chickentext > * {
+    display: inline;
+}

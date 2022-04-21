@@ -4,7 +4,8 @@ let loading = 0;
 
 function reset() {
     game = {
-      basic: Decimal(0),
+      Basic: Decimal(1),
+      eggs: Decimal(0),
     }
     
   }
@@ -18,7 +19,7 @@ function reset() {
 
 Decimal.config({ precision: 8, rounding: 4 })
 
-Decimal.prototype.formateNumber = function (max = 5, r = 1) {
+Decimal.prototype.formateNumber = function (max = 5, r = 0) {
     if (this.e >= 100000) {
       formatestring = 1 + "ee" + Math.log10(this.e).toFixed(1)
     } else if (this.e >= max) {
@@ -88,13 +89,20 @@ Decimal.prototype.formateNumber = function (max = 5, r = 1) {
     window.location.reload()
   }
 
+  let savetimer
+  let ticktimer
+  let fastticktimer
+  let loadingtimer
    function LOADING(){
     loadIDS()
+    createElements()
     load()
 
 
-
-  let savetimer = setInterval(save,1000);
+fastticktimer = setInterval(fasttick,100)
+ticktimer = setInterval(tick,1000)
+  savetimer = setInterval(save,1000)
+  loadingtimer = setInterval(loadScreen,20)
   loading = 1;
    }
 
@@ -109,4 +117,37 @@ Decimal.prototype.formateNumber = function (max = 5, r = 1) {
   }
   function removenotification() {
     e.notification.style.display = "none"
+  }
+  function updateChickens(){
+      chickenNames.forEach((x) =>{ 
+    e["chicken"+x+"Counter"].innerText = game[x].formateNumber()
+      })
+  }
+//once a second
+  function tick(){
+   updateChickens()
+   e.eggcounter.innerText = game.eggs.formateNumber()
+
+  }
+  //10 times secon
+  function fasttick(){
+      game.eggs = game.eggs.plus(game.Basic.mul(0.1))
+  }
+
+  let loadingScreenOpacity = 1.5
+  
+  
+  function loadScreen()
+  {
+    console.log(loadingScreenOpacity)
+    if(loadingScreenOpacity < 0.5)
+    loadingScreenOpacity = loadingScreenOpacity-0.03
+    else
+    loadingScreenOpacity = loadingScreenOpacity-0.01
+    
+      e.loading.style.opacity = loadingScreenOpacity
+    if(loadingScreenOpacity <= 0){
+        e.loading.style.display = "none"
+        clearInterval(loadingtimer)
+    }
   }
