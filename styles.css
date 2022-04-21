@@ -78,3 +78,18 @@ vertical-align: sub;
 .chickentext > * {
     display: inline;
 }
+#upgradesdiv {
+    display: block;
+    float: right;
+    width: 15%;
+    height: 80vh;
+    margin: 1vh;
+  }
+  .upgrade {
+    display: block;
+    width: 100%;
+    margin-top: 1%;
+    font-size: 2vh;
+    padding: 2%;
+    border-radius: 20px;
+  }

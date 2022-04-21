@@ -16,5 +16,29 @@ chickenNames.forEach(x => {
   tag.innerHTML  ="<img src='img/"+x+"chicken.png'> <div class='chickentext'>"+ x+ " <p id='chicken"+x+"Counter'>0</p></div>"
   e.chickensdiv.appendChild(tag)
  })
+
+ upgradesNames.forEach((x,i)=>{
+  tag = document.createElement("button")
+  tag.setAttribute("class", "upgrade")
+  tag.setAttribute("id", "upgrade" + i)
+  tag.setAttribute("onclick", "buyupgrade(" + i + ")")
+  tag.innerHTML =
+    x +
+    '<p class="cost" id="cost' +
+    i +
+    '">0' +
+    getCostName(i) +
+    "</p>"
+  e.upgradesdiv.appendChild(tag)
+})
+
 loadIDS()
+}
+function getCostName(r){
+  r = upgradeCosts[r]
+  switch (r) {
+    default:
+      return " " + r[0].toUpperCase() + r.slice(1); 
+   
+  }
 }

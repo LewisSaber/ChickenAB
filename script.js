@@ -1,11 +1,12 @@
 let game = {}
 let loading = 0;
-
+let upgradelimits = []
 
 function reset() {
     game = {
       Basic: Decimal(1),
       eggs: Decimal(0),
+      upgrades : []
     }
     
   }
@@ -97,7 +98,11 @@ Decimal.prototype.formateNumber = function (max = 5, r = 0) {
     loadIDS()
     createElements()
     load()
-
+for(let i = game.upgrades.length; i < upgradesNames.length;i++) game.upgrades.push(0)
+   upgradesNames.forEach((x,i)=>{
+       upgradelimits.push(10000000)
+       buyupgrade(i)
+   })
 
 fastticktimer = setInterval(fasttick,100)
 ticktimer = setInterval(tick,1000)
@@ -131,7 +136,7 @@ ticktimer = setInterval(tick,1000)
   }
   //10 times secon
   function fasttick(){
-      game.eggs = game.eggs.plus(game.Basic.mul(0.1))
+      game.eggs = game.eggs.plus(game.Basic.mul(0.05))
   }
 
   let loadingScreenOpacity = 1.5
@@ -149,4 +154,69 @@ ticktimer = setInterval(tick,1000)
         e.loading.style.display = "none"
         clearInterval(loadingtimer)
     }
+  }
+
+
+  function buyupgrade(r) {
+    let bupgrade = false
+     cost = getCost(r)
+     if (
+       game[upgradeCosts[r]].greaterThanOrEqualTo(cost) &&
+       loading == 1 &&
+       game.upgrades[r] < upgradelimits[r]
+     ) {
+       game.upgrades[r] += 1
+       switch (r) {
+         case 0:
+          ThrowEgg();
+          break;
+         default:
+   
+           break
+       }
+       tick()
+       game[upgradeCosts[r]] = game[upgradeCosts[r]].sub(cost)
+       bupgrade = true
+       
+     }
+     e["cost" + r].innerText = getCost(r).formateNumber() + getCostName(r)
+     if (game.upgrades[r] >= upgradelimits[r]) {
+       e["upgrade" + r].style.display = "none"
+       temphideupgrades()
+     }// else e["upgrade" + r].style.display = "block"
+     return bupgrade
+   }
+
+   function temphideupgrades() {
+    let totalupgrades = 0
+    for (let i = 0; i < upgrades; i++) {
+      if (game.upgrades[i] < upgradelimits[i]) {
+       
+          totalupgrades++
+          if (totalupgrades > 6) {
+            e["upgrade" + i].style.display = "none"
+          } else e["upgrade" + i].style.display = "block"
+        
+      }
+    }
+  }
+  function getCost(r){
+     switch (r) {
+         case 0:
+             return Decimal(5)
+     
+         default:
+             return Decimal(1e300)
+             
+     }
+  }
+  function random(r){
+      return Math.floor(Math.random()*r) == 1
+  }
+  function ThrowEgg(){
+      if(random(4)){
+
+          game.Basic = game.Basic.plus(Decimal(1))
+          updateChickens()
+      }
   }
