@@ -139,7 +139,6 @@ ticktimer = setInterval(tick,1000)
   
   function loadScreen()
   {
-    console.log(loadingScreenOpacity)
     if(loadingScreenOpacity < 0.5)
     loadingScreenOpacity = loadingScreenOpacity-0.03
     else
