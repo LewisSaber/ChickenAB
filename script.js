@@ -100,7 +100,15 @@ Decimal.prototype.formateNumber = function (max = 5, r = 0) {
     load()
 for(let i = game.upgrades.length; i < upgradesNames.length;i++) game.upgrades.push(0)
    upgradesNames.forEach((x,i)=>{
-       upgradelimits.push(10000000)
+       switch (i) {
+           case 1:
+            upgradelimits.push(20)
+       break;
+           default:
+            upgradelimits.push(10000000)
+               break;
+       }
+      
        buyupgrade(i)
    })
 
@@ -112,8 +120,7 @@ ticktimer = setInterval(tick,1000)
    }
 
 
-
-
+  
 
    function notification(r) {
     e.notification.innerText = r
@@ -130,11 +137,13 @@ ticktimer = setInterval(tick,1000)
   }
 //once a second
   function tick(){
+    if(game.upgrades[1] && random(20/game.upgrades[1])) ThrowEgg(5)
    updateChickens()
    e.eggcounter.innerText = game.eggs.formateNumber()
+   
 
   }
-  //10 times secon
+  //10 times second
   function fasttick(){
       game.eggs = game.eggs.plus(game.Basic.mul(0.05))
   }
@@ -189,7 +198,7 @@ ticktimer = setInterval(tick,1000)
 
    function temphideupgrades() {
     let totalupgrades = 0
-    for (let i = 0; i < upgrades; i++) {
+    for (let i = 0; i < upgradesNames.length; i++) {
       if (game.upgrades[i] < upgradelimits[i]) {
        
           totalupgrades++
@@ -204,19 +213,22 @@ ticktimer = setInterval(tick,1000)
      switch (r) {
          case 0:
              return Decimal(5)
-     
+         case 1:
+             return Decimal(1000).mul(Decimal(2.4).toPower(Decimal(game.upgrades[r])))
          default:
              return Decimal(1e300)
              
      }
   }
   function random(r){
-      return Math.floor(Math.random()*r) == 1
+    r = Math.round(r)
+      return Math.floor(Math.random()*r) == 0
   }
-  function ThrowEgg(){
+  function ThrowEgg(r=1){
+    
       if(random(4)){
-
-          game.Basic = game.Basic.plus(Decimal(1))
+         
+          game.Basic = game.Basic.plus(Decimal(1).mul(Decimal(r)))
           updateChickens()
       }
   }
