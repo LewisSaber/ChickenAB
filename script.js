@@ -89,6 +89,7 @@ Decimal.prototype.formateNumber = function (max = 5, r = 1) {
   }
 
    function LOADING(){
+    loadIDS()
     load()
 
 
@@ -96,3 +97,16 @@ Decimal.prototype.formateNumber = function (max = 5, r = 1) {
   let savetimer = setInterval(save,1000);
   loading = 1;
    }
+
+
+
+
+
+   function notification(r) {
+    e.notification.innerText = r
+    e.notification.style.display = "block"
+    setTimeout(removenotification, 2000)
+  }
+  function removenotification() {
+    e.notification.style.display = "none"
+  }
