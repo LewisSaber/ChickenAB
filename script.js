@@ -6,7 +6,8 @@ function reset() {
     game = {
       Basic: Decimal(1),
       eggs: Decimal(0),
-      upgrades : []
+      upgrades : [],
+      doubleEventLength: 0,
     }
     
   }
@@ -148,16 +149,39 @@ ticktimer = setInterval(tick,1000)
    updateChickens()
    e.eggcounter.innerText = game.eggs.formateNumber()
    if(random(100)&& !isEventOn) randomEvent()
+   updateValues()
+   if(game.doubleEventLength > 0) game.doubleEventLength--
+  }
 
+  function updateValues(){
+    updateChickens()
+    e.eggcounter.innerText = game.eggs.formateNumber()
+    e.eggPerSecond.innerText = eggGain.mul(10).formateNumber()
+   // if(game.doubleEventLength > 0){
+      e.doubleEventHandler.innerText = game.doubleEventLength > 0 ? "(x2 for " + HumanReadibleTime(game.doubleEventLength) + ")" : ""
+    
   }
   //10 times second
+  let eggGain
   function fasttick(){
-      game.eggs = game.eggs.plus(game.Basic.mul(0.05))
+      eggGain = game.Basic.mul(0.05).mul((game.doubleEventLength >> Math.log2(game.doubleEventLength)) + 1)
+      game.eggs = game.eggs.plus(eggGain)
   }
+function HumanReadibleTime(seconds){
+  let minutes
+  if(seconds >= 60 ){
+    minutes = Math.trunc(seconds/60)
+       seconds -= minutes * 60
+     }
+    seconds = "0" + seconds
+    if(minutes > 0)
+    return  minutes + ":" + seconds.slice(-2)
+    else
+    return "0:"+seconds.slice(-2)
+}
 
-  let loadingScreenOpacity = 1.5
-  
-  
+
+  let loadingScreenOpacity = 1.5 
   function loadScreen()
   {
     if(loadingScreenOpacity < 0.5)
@@ -192,7 +216,7 @@ ticktimer = setInterval(tick,1000)
    
            break
        }
-       tick()
+       updateValues()
        game[upgradeCosts[r]] = game[upgradeCosts[r]].sub(cost)
        bupgrade = true
        
@@ -272,16 +296,19 @@ ticktimer = setInterval(tick,1000)
    
     }
   }
-  let totalevents = 1
+  let totalevents = 2
   let isEventOn = false
   function randomEvent(){
-     isEventOn = true
+     
     let r = Math.floor(Math.random() *totalevents)
     switch (r) {
       case 0:
+        isEventOn = true
         e.largeEggEvent.style.display = "block"
         break;
-    
+      case 1:
+        doubleEggEvent()
+        break;
       default:
         break;
     }
@@ -314,3 +341,7 @@ ticktimer = setInterval(tick,1000)
      isEventOn = false
   }
   }
+  //double Egg event
+function doubleEggEvent(){
+game.doubleEventLength += game.doubleEventLength > 0 ? 50 : 100
+}
