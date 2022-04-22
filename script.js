@@ -20,6 +20,13 @@ function reset() {
 
 Decimal.config({ precision: 8, rounding: 4 })
 
+Number.prototype.formateNumber = function (max = 1e5) {
+  if (this.valueOf() >= max) {
+    formatestring = this.valueOf().toExponential(1).replace("+", "")
+  } else formatestring = this.valueOf() >> 0
+  return formatestring
+}
+
 Decimal.prototype.formateNumber = function (max = 5, r = 0) {
     if (this.e >= 100000) {
       formatestring = 1 + "ee" + Math.log10(this.e).toFixed(1)
@@ -137,7 +144,7 @@ ticktimer = setInterval(tick,1000)
   }
 //once a second
   function tick(){
-    if(game.upgrades[1] && random(20/game.upgrades[1])) ThrowEgg(5)
+    if(game.upgrades[1] && random(20/game.upgrades[1])) ThrowEgg(gEPT().mul(5))
    updateChickens()
    e.eggcounter.innerText = game.eggs.formateNumber()
    
@@ -164,7 +171,9 @@ ticktimer = setInterval(tick,1000)
         clearInterval(loadingtimer)
     }
   }
-
+  function gEPT()
+  {
+    return getUpgradeEffect(2)  }
 
   function buyupgrade(r) {
     let bupgrade = false
@@ -177,7 +186,7 @@ ticktimer = setInterval(tick,1000)
        game.upgrades[r] += 1
        switch (r) {
          case 0:
-          ThrowEgg();
+          ThrowEgg(gEPT());
           break;
          default:
    
@@ -212,9 +221,11 @@ ticktimer = setInterval(tick,1000)
   function getCost(r){
      switch (r) {
          case 0:
-             return Decimal(5)
+             return Decimal(5).mul(gEPT())
          case 1:
              return Decimal(1000).mul(Decimal(2.4).toPower(Decimal(game.upgrades[r])))
+         case 2:
+           return Decimal(2000).mul(Decimal(1.5).toPower(Decimal(game.upgrades[r])))
          default:
              return Decimal(1e300)
              
@@ -225,10 +236,10 @@ ticktimer = setInterval(tick,1000)
       return Math.floor(Math.random()*r) == 0
   }
   function ThrowEgg(r=1){
-    
+    console.log(r.formateNumber())
       if(random(4)){
          
-          game.Basic = game.Basic.plus(Decimal(1).mul(Decimal(r)))
+          game.Basic = game.Basic.plus(Decimal(1).mul(r))
           updateChickens()
       }
   }
@@ -250,3 +261,15 @@ ticktimer = setInterval(tick,1000)
     holding = 0
     clearInterval(holdingtimer)
   }
+  function getUpgradeEffect(r){
+    switch (r) {
+      case 2:
+       return Decimal(game.upgrades[r] + 1)
+       
+    
+      default:
+        return Decimal(0)
+   
+    }
+  }
+  
