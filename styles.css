@@ -108,4 +108,14 @@ vertical-align: sub;
     background-color: rgb(206, 206, 206);
 
   }
+  #largeEggEvent{
+    position: absolute;
+    width: 23%;
+    background-size: cover;
+    top: 50%;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%) ;
+    display: none;
+  }
   

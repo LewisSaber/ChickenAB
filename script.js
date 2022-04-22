@@ -147,7 +147,7 @@ ticktimer = setInterval(tick,1000)
     if(game.upgrades[1] && random(20/game.upgrades[1])) ThrowEgg(gEPT().mul(5))
    updateChickens()
    e.eggcounter.innerText = game.eggs.formateNumber()
-   
+   if(random(100)&& !isEventOn) randomEvent()
 
   }
   //10 times second
@@ -235,9 +235,9 @@ ticktimer = setInterval(tick,1000)
     r = Math.round(r)
       return Math.floor(Math.random()*r) == 0
   }
-  function ThrowEgg(r=1){
-    console.log(r.formateNumber())
-      if(random(4)){
+  function ThrowEgg(r=1,c = 0){
+
+      if(random(4) || c){
          
           game.Basic = game.Basic.plus(Decimal(1).mul(r))
           updateChickens()
@@ -272,4 +272,45 @@ ticktimer = setInterval(tick,1000)
    
     }
   }
-  
+  let totalevents = 1
+  let isEventOn = false
+  function randomEvent(){
+     isEventOn = true
+    let r = Math.floor(Math.random() *totalevents)
+    switch (r) {
+      case 0:
+        e.largeEggEvent.style.display = "block"
+        break;
+    
+      default:
+        break;
+    }
+  }
+
+
+  function getWidth() {
+    return Math.max(
+      document.body.scrollWidth,
+      document.documentElement.scrollWidth,
+      document.body.offsetWidth,
+      document.documentElement.offsetWidth,
+      document.documentElement.clientWidth
+    );
+  }
+
+  //large egg Event
+  let percentsize = 23 
+  function growLargeEgg(){
+    percentsize = (getComputedStyle(e.largeEggEvent).width.slice(0,-2)/getWidth()).toFixed(2)*100 
+  e.largeEggEvent.style.width =   (getComputedStyle(e.largeEggEvent).width.slice(0,-2)/percentsize)*(percentsize+1)     +"px"
+  if(percentsize > 45){
+    e.largeEggEvent.style.display = "none"
+    e.largeEggEvent.style.width =   (getComputedStyle(e.largeEggEvent).width.slice(0,-2)/percentsize)*22    +"px"
+    percentsize = 22
+     let reward = Decimal(600 + Math.floor(Math.random()*600)).mul(gEPT())
+     ThrowEgg(reward,1)
+     
+     notification("Reward: "+ reward.formateNumber() + " Basic Chickens")
+     isEventOn = false
+  }
+  }
