@@ -232,3 +232,21 @@ ticktimer = setInterval(tick,1000)
           updateChickens()
       }
   }
+  let holding = 0
+  let holdingtimer 
+
+  function holdingpp(r){ holding++
+    if(holding > 3)
+    {
+      clearInterval(holdingtimer)
+      holingtimer = setInterval(buyupgrade,300,r)
+    }
+   }
+  function holdUpdates(r){
+    holdingtimer = setInterval(holdingpp,100,r)
+   
+  }
+  function releaseUpdates(){
+    holding = 0
+    clearInterval(holdingtimer)
+  }

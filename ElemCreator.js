@@ -22,6 +22,8 @@ chickenNames.forEach(x => {
   tag.setAttribute("class", "upgrade")
   tag.setAttribute("id", "upgrade" + i)
   tag.setAttribute("onclick", "buyupgrade(" + i + ")")
+  tag.setAttribute("onmousedown", "holdUpdates(" + i + ")")
+  tag.setAttribute("onmouseup", "releaseUpdates()")
   tag.innerHTML =
     x +
     '<p class="cost" id="cost' +
